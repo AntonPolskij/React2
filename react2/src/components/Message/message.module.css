@@ -1,0 +1,13 @@
+.msg {
+    font-size: 25px;
+    border: 3px solid rgb(1, 1, 1);
+}
+
+.me {
+    background-color: rgb(27, 221, 27);
+}
+
+.from {
+    background-color: rgb(0, 126, 253);
+    text-align: end;
+}
