@@ -1,8 +1,9 @@
-import logo from './logo.svg';
-import './App.css';
 import { Message } from './components';
 import { useMessageList } from './hooks/useMessageList';
 import { useCreateMessageForm } from './hooks/useCreateMessageForm';
+import { useRef, useEffect, useState } from 'react';
+import { Button, Grid, Input, List, ListItem, Paper } from '@mui/material';
+import { Box } from '@mui/system';
 
 
 
@@ -13,20 +14,45 @@ function App() {
   const { onInputChange, handleSubmit, inputValue } = useCreateMessageForm({ addNewMessage: addNewMessage });//Вызов кастом-хука#2
 
 
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef.current?.focus();    // автофокус на инпуте сообщений.
+  }, [messageList]);
+
+
+  const [chats, setChats] = useState([{
+    id: Date.now(),
+    name: 'Bot1'
+  }, {
+    id: Date.now() + 1,
+    name: 'Bot2'
+  }, {
+    id: Date.now() + 2,
+    name: 'Bot3'
+  }]);
+
+
   return (
-    <div className="App">
-      <img className="App-logo" src={logo}></img>
-      {/* <Message text={'Первый компонент'}/>
-      <Message text={'Смс от меня'} theme={'me'}/>
-      <Message text={'Смс для меня'} theme={'from'} /> */}
-      <ul reversed>
-        {messageList.map((message) => <li><Message text={message.text} author={message.author} theme={message.author} /></li>)}
-      </ul>
-      <form onSubmit={handleSubmit}>
-        <input type="text" onChange={onInputChange} value={inputValue} className='text-input' placeholder='Введите ваше сообщение' />
-        <input type="submit" className='btn' />
-      </form>
-    </div>
+    <Grid container columns={12} className="App">
+      <Grid item xs={2}>
+        <List>
+          {chats.map((chat) => <ListItem key={chat.id}>{chat.name}</ListItem>)}
+        </List>
+      </Grid>
+      <Grid sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '97vh',
+      }} item xs={10}>
+        <List sx={{flexGrow: '1'}} reversed>
+          {messageList.map((message) => <Message key={message.id} text={message.text} author={message.author} />)}
+        </List>
+        <Box sx={{ display: 'flex'}} component="form" onSubmit={handleSubmit}>
+          <Input sx={{ flexGrow: '2' }} ref={inputRef} type="text" onChange={onInputChange} value={inputValue} placeholder='Введите ваше сообщение' />
+          <Button variant='contained' type="submit" className='btn'>Отправить</Button>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }
 

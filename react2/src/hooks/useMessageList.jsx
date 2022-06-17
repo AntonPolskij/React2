@@ -10,6 +10,7 @@ export const useMessageList = () => {
             setTimeout(() => {
                 const date = new Date();
                 const botMessage = {
+                    id: Date.now(),
                     author: AUTHORS.BOT,
                     text: `Сообщение отправленно! ${date.toString()}`,
                 };
@@ -27,6 +28,7 @@ export const useMessageList = () => {
 
     const addNewMessage = useCallback((text) => {
         const newMessage = {
+            id: Date.now(),
             author: AUTHORS.ME,
             text,
         }
